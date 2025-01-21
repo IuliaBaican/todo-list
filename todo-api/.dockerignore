@@ -1,0 +1,15 @@
+### Ignore it all by default, handle exceptions ###
+*
+
+### Code ###
+!/src
+!/public
+
+### Configuration ###
+!/package.json
+!/package-lock.json
+!/tsconfig*.json
+!/vite.config.ts
+!/nginx.conf
+!/.env
+

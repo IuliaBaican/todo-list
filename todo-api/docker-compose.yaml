@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - todo-list-network
+
+  backend:
+    build: .
+    container_name: todo-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    networks:
+      - todo-list-network
+
+networks:
+  todo-list-network:
+    name: todo-list-network
+ 

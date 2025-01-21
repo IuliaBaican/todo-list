@@ -1,0 +1,33 @@
+{
+  "name": "todo-backend-app",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon --watch src -e ts,ejs,js --exec npx ts-node src/index.ts",
+    "dev": "nodemon .",
+    "tsc": "tsc --noEmit",
+    "prettier": "prettier --check src/**/*.{ts,tsx}",
+    "prettier:fix": "npm run prettier -- --write"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "^22.10.6",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
