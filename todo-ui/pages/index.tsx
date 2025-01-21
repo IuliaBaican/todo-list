@@ -5,6 +5,7 @@ import { store } from '@store';
 import { TodoHeader, TodoContent } from '@features';
 import { theme } from '../theme';
 import { FilterProvider } from '@context/FilterContext';
+import { ViewProvider } from '@context/ViewContext';
 
 const HomePage = () => {
   return (
@@ -12,16 +13,18 @@ const HomePage = () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <FilterProvider>
-            <Container
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Typography variant="h2">TODO LIST</Typography>
-              <TodoHeader />
-              <TodoContent />
-            </Container>
+            <ViewProvider>
+              <Container
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Typography variant="h2">TODO LIST</Typography>
+                <TodoHeader />
+                <TodoContent />
+              </Container>
+            </ViewProvider>
           </FilterProvider>
         </ThemeProvider>
       </Provider>

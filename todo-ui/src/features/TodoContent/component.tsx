@@ -5,6 +5,8 @@ import { FilterStatus, Todo } from '@types';
 import { useState } from 'react';
 import { useGetAllItemsQuery } from '@store/api/todosApi';
 import { useFilter } from '@context/FilterContext';
+import { useView } from '@context/ViewContext';
+import { TodoCalendar } from '@components/TodoCalendar';
 
 const filterTodos = (todos: Todo[], filterStatus: FilterStatus) => {
   return todos
@@ -42,15 +44,24 @@ export const TodoContent = () => {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const { filters } = useFilter();
+  const { view } = useView();
 
   const todos = useGetAllItemsQuery(undefined).data ?? [];
-
   const filteredTodos = filterTodos(todos, filters);
 
   const handleEdit = (todo: Todo) => {
     setSelectedTodo(todo);
     setUpdateModalOpen(true);
   };
+
+  const todoItems =
+    filteredTodos.length > 0 ? (
+      filteredTodos.map((todo) => (
+        <TodoItem todo={todo} key={todo.id} onEdit={() => handleEdit(todo)} />
+      ))
+    ) : (
+      <Typography>No tasks found.</Typography>
+    );
 
   return (
     <Container
@@ -60,12 +71,10 @@ export const TodoContent = () => {
         padding: 2.5,
       }}
     >
-      {filteredTodos.length > 0 ? (
-        filteredTodos.map((todo) => (
-          <TodoItem todo={todo} key={todo.id} onEdit={() => handleEdit(todo)} />
-        ))
+      {view === 'list' ? (
+        <div>{todoItems}</div>
       ) : (
-        <Typography>No tasks found.</Typography>
+        <TodoCalendar todos={filteredTodos} onEdit={handleEdit} />
       )}
       <TodoModal
         modalOpen={updateModalOpen}

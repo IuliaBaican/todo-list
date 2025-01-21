@@ -1,20 +1,28 @@
 import { useState } from 'react';
-import { Box, Button, Container } from '@mui/material';
-import { Dropdown } from '@components';
+import { Box, Button, ButtonGroup, Container } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import { TodoModal } from '@features';
-import {
-  PRIORITY_OPTIONS,
-  SORT_BY_OPTIONS,
-  STATUS_OPTIONS,
-} from '@lib/constants';
-import { useFilter } from '@context/FilterContext';
+import { useView } from '@context/ViewContext';
+import { FilteringDrawer } from '@components/FilteringDrawer';
 
 export const TodoHeader = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { filters, updateFilter } = useFilter();
+  const { view, setView } = useView();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleClickOpen = () => {
     setModalOpen(true);
+  };
+
+  const toggleView = (newView: 'list' | 'calendar') => {
+    setView(newView);
+  };
+
+  const toggleDrawer = (open: boolean) => {
+    setDrawerOpen(open);
   };
 
   return (
@@ -26,39 +34,32 @@ export const TodoHeader = () => {
       }}
     >
       <Button variant="contained" onClick={handleClickOpen}>
-        Add Task
+        <AddIcon fontSize="medium" />
       </Button>
-      <Box
-        sx={{
-          display: 'flex',
-          flex: '1',
-          marginLeft: 10,
-          gap: 1,
-        }}
-      >
-        <Dropdown
-          value={filters.status}
-          name="status"
-          label="Status"
-          onChange={(value) => updateFilter('status', value)}
-          options={STATUS_OPTIONS}
-        />
-        <Dropdown
-          value={filters.priority}
-          name="priority"
-          label="Priority"
-          onChange={(value) => updateFilter('priority', value)}
-          options={PRIORITY_OPTIONS}
-        />
-        <Dropdown
-          value={filters.sortBy}
-          name="sortBy"
-          label="Sort by"
-          onChange={(value) => updateFilter('sortBy', value)}
-          options={SORT_BY_OPTIONS}
-        />
+      <Box sx={{ display: 'flex', gap: 10 }}>
+        {view === 'list' && (
+          <Button variant="outlined" onClick={() => toggleDrawer(true)}>
+            <FilterListIcon />
+          </Button>
+        )}
+        <ButtonGroup>
+          <Button
+            variant={view === 'list' ? 'contained' : 'outlined'}
+            onClick={() => toggleView('list')}
+          >
+            <FormatListBulletedOutlinedIcon />
+          </Button>
+          <Button
+            variant={view === 'calendar' ? 'contained' : 'outlined'}
+            onClick={() => toggleView('calendar')}
+          >
+            <CalendarMonthIcon />
+          </Button>
+        </ButtonGroup>
       </Box>
+
       <TodoModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <FilteringDrawer open={drawerOpen} onClose={() => toggleDrawer(false)} />
     </Container>
   );
 };
